@@ -1,5 +1,11 @@
 import React from 'react';
-import { StyleSheet, Text, View, Image } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image
+}
+from 'react-native';
 
 var genres = {
   10759: "Action & Adventure",
@@ -22,27 +28,23 @@ var genres = {
 
 export default class ShowInfo extends React.Component {
   constructor(props) {
-   super(props);
-   this.state = {
-
-   };
-
-   this.getGenres = this.getGenres.bind(this);
-
+    super(props);
+    this.state = {};
+    this.getGenres = this.getGenres.bind(this);
   }
 
-  getGenres(){
+  getGenres() {
     var arr = this.props.data.genre_ids.slice(0);
     var newArr = [];
-    while(arr.length !== 0){
-      for (var g in genres){
-        if (arr[0] == g){
+    while (arr.length !== 0) {
+      for (var g in genres) {
+        if (arr[0] == g) {
           newArr.push(genres[g]);
         }
       }
       arr.shift();
     }
-    return(
+    return (
       <Text style={{fontSize: 14}}>Genres: {newArr.join()}</Text>
     );
   }
@@ -54,7 +56,6 @@ export default class ShowInfo extends React.Component {
         <Text style={styles.item}>ID: {this.props.data.id}</Text>
         {this.getGenres()}
         <Text style={{fontSize: 12}}>Overview: {this.props.data.overview}</Text>
-
         <Image source={{uri: 'https://image.tmdb.org/t/p/w500/'+ this.props.data.poster_path}} style={{width: 200, height: 300}} ></Image>
       </View>
     );
@@ -64,10 +65,9 @@ export default class ShowInfo extends React.Component {
 const styles = StyleSheet.create({
   container: {
     padding: 25,
-   marginBottom: 5,
-   borderBottomWidth: 0.5,
-   backgroundColor: 'white'
-
+    marginBottom: 5,
+    borderBottomWidth: 0.5,
+    backgroundColor: 'white'
   },
   item: {
     fontSize: 18,

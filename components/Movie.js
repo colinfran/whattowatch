@@ -1,8 +1,13 @@
 import React from 'react';
-import { StyleSheet, Text, TouchableOpacity, Image } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  Image
+}
+from 'react-native';
 
 export default class Movie extends React.Component {
-
   render() {
     return (
       <TouchableOpacity style={styles.container} onPress={() => this.props.updateModalData(this.props.data)}>
@@ -17,8 +22,7 @@ const styles = StyleSheet.create({
   container: {
     paddingBottom: 15,
     paddingTop: 10,
-
-   borderBottomWidth: 0.5,
+    borderBottomWidth: 0.5,
     alignItems: "center"
   },
   item: {

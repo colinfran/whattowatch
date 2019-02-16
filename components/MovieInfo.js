@@ -1,5 +1,11 @@
 import React from 'react';
-import { StyleSheet, Text, View, Image } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image
+}
+from 'react-native';
 
 var genres = {
   28: "Action",
@@ -25,27 +31,24 @@ var genres = {
 
 export default class MovieInfo extends React.Component {
   constructor(props) {
-   super(props);
-   this.state = {
-
-   };
-
-   this.getGenres = this.getGenres.bind(this);
+    super(props);
+    this.state = {};
+    this.getGenres = this.getGenres.bind(this);
   }
 
-  getGenres(){
+  getGenres() {
     var arr = this.props.data.genre_ids.slice(0);
     var newArr = [];
-    while(arr.length !== 0){
-      for (var g in genres){
-        if (arr[0] == g){
+    while (arr.length !== 0) {
+      for (var g in genres) {
+        if (arr[0] == g) {
           newArr.push(genres[g]);
           arr.shift();
         }
       }
       arr.shift();
     }
-    return(
+    return (
       <Text style={{fontSize: 14}}>Genres: {newArr.join()}</Text>
     );
   }
@@ -65,10 +68,10 @@ export default class MovieInfo extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-   padding: 25,
-   marginBottom: 5,
-   borderBottomWidth: 0.5,
-   backgroundColor: 'white'
+    padding: 25,
+    marginBottom: 5,
+    borderBottomWidth: 0.5,
+    backgroundColor: 'white'
   },
   item: {
     fontSize: 18,

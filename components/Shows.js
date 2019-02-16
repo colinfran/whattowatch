@@ -1,5 +1,13 @@
 import React from 'react';
-import { StyleSheet, Text, View, FlatList, ActivityIndicator, TouchableHighlight } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  FlatList,
+  ActivityIndicator,
+  TouchableHighlight
+}
+from 'react-native';
 import Modal from "react-native-modal";
 
 import Show from './Show';
@@ -7,18 +15,17 @@ import ShowInfo from './ShowInfo';
 
 export default class Shows extends React.Component {
   constructor(props) {
-   super(props);
-   this.state = {
-     isLoading: true,
-     tvData: null,
-     modalVisible: false,
-     modalData: null,
-   };
-   this.updateDataForModal = this.updateDataForModal.bind(this);
+    super(props);
+    this.state = {
+      isLoading: true,
+      tvData: null,
+      modalVisible: false,
+      modalData: null,
+    };
+    this.updateDataForModal = this.updateDataForModal.bind(this);
+  }
 
- }
-
- componentDidMount(){
+  componentDidMount() {
     return fetch('https://api.themoviedb.org/3/trending/tv/week?api_key=dbcdb9d96b827ad1d9d7f6c5d9e2d636')
       .then((response) => response.json())
       .then((responseJson) => {
@@ -26,48 +33,41 @@ export default class Shows extends React.Component {
         this.setState({
           isLoading: false,
           tvData: responseJson.results
-        }, function(){
-
-        });
-
+        }, function() {});
       })
-      .catch((error) =>{
+      .catch((error) => {
         console.error(error);
       });
   }
 
-  setModalVisible(visible) {
-     this.setState({modalVisible: visible});
-  }
-
-  updateDataForModal(arg){
-    this.setState({modalData: arg, modalVisible: !this.state.modalVisible});
+  updateDataForModal(arg) {
+    this.setState({
+      modalData: arg,
+      modalVisible: !this.state.modalVisible
+    });
   }
 
   render() {
-    if(this.state.isLoading){
-      return(
+    if (this.state.isLoading) {
+      return (
         <View style={{flex: 1, padding: 20}}>
           <ActivityIndicator/>
         </View>
       )
     }
-    else{
+    else {
       return (
         <View style={{backgroundColor:"white", flex: 1}}>
-            <FlatList
+          <FlatList
              data={this.state.tvData}
              keyExtractor={(item, index) => index.toString()}
              renderItem={({item}) => <Show updateModalData={this.updateDataForModal} data={item}></Show>}
-           />
+             />
            <Modal
              isVisible={this.state.modalVisible}
-              onBackdropPress={() =>
-                this.setState({ modalVisible: !this.state.modalVisible })
-              }
+              onBackdropPress={() => this.setState({ modalVisible: !this.state.modalVisible })}
               style={{ alignItems: "center" }}
               hideModalContentWhileAnimating={true}
-
              >
              <ShowInfo data={this.state.modalData}></ShowInfo>
            </Modal>
