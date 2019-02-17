@@ -12,7 +12,7 @@ const MovieStack = createStackNavigator({
 
 MovieStack.navigationOptions = {
   header: null,
-
+headerLeft: null,
   tabBarLabel: 'Movies',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
@@ -29,8 +29,12 @@ const ShowStack = createStackNavigator({
 
 ShowStack.navigationOptions = {
   header: null,
+  headerLeft: null,
 
   tabBarLabel: 'TV',
+  style: {
+    backgroundColor:'#fff'
+  },
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
@@ -39,7 +43,28 @@ ShowStack.navigationOptions = {
   ),
 };
 
-export default createBottomTabNavigator({
-  MovieStack,
-  ShowStack,
+const TabNav = createBottomTabNavigator(
+  {
+    MovieStack: {
+      screen: MovieStack,
+    },
+    ShowStack: {
+      screen: ShowStack,
+    },
+  },
+  {
+    tabBarPosition: 'bottom',
+    tabBarOptions: {
+      activeTintColor: '#fff',
+      inactiveTintColor: '#404040',
+      style: {
+        backgroundColor: '#000',
+      },
+      labelStyle: {
+        fontSize: 13,
+      },
+    },
 });
+
+
+export default TabNav;

@@ -3,24 +3,15 @@ import {
   View,
   Text,
   StyleSheet,
+  ScrollView,
+  SafeAreaView,
+  StatusBar
 }
 from 'react-native';
 import TopBarNav from 'top-bar-nav';
-import ShowsDay from '../components/ShowsDay';
-import ShowsWeek from '../components/ShowsWeek';
-
-const ROUTES = {
-  ShowsDay,
-  ShowsWeek
-};
-
-const ROUTESTACK = [{
-  text: 'Today',
-  title: 'ShowsDay'
-}, {
-  text: 'This Week',
-  title: 'ShowsWeek'
-}];
+import ShowsDay from '../components/Shows/ShowsDay';
+import ShowsWeek from '../components/Shows/ShowsWeek';
+import ShowsPopular from '../components/Shows/ShowsPopular';
 
 export default class ShowScreen extends React.Component {
   constructor(props) {
@@ -28,25 +19,29 @@ export default class ShowScreen extends React.Component {
     console.log("\n\n\n\n\n\n\n\n\n\n");
   }
 
+  static navigationOptions = {
+    header: null
+  };
+
   render() {
     return (
-      <View style={{
+      <SafeAreaView style={{
         flex: 1,
-        backgroundColor: 'lightgrey'
+        backgroundColor: 'black',
       }}>
-      <TopBarNav
-        routeStack={ROUTESTACK}
-        renderScene={(route, i) => { let Component = ROUTES[route.title]; return <Component index={i}/>;}}
-        headerStyle={[styles.headerStyle, {paddingTop: 15}]}
-        labelStyle={styles.labelStyle}
-        underlineStyle={styles.underlineStyle}
-        imageStyle={styles.imageStyle}
-        sidePadding={40}
-        initialIndex={0}
-        inactiveOpacity={1}
-        fadeLabels={true}
-      />
-    </View>
+      <StatusBar barStyle = "light-content"/>
+        <ScrollView style={{
+          flex: 1,
+          backgroundColor: 'black'
+        }}>
+          <Text style={{fontSize: 20,paddingTop: 5,backgroundColor: '#000', color: '#fff',paddingLeft: 20,fontWeight: 'bold'}}>Trending Today</Text>
+          <ShowsDay></ShowsDay>
+          <Text style={{fontSize: 20,paddingTop: 25, backgroundColor: '#000', color: '#fff',paddingLeft: 20,fontWeight: 'bold'}}>Trending This Week</Text>
+          <ShowsWeek></ShowsWeek>
+          <Text style={{fontSize: 20,paddingTop: 25, backgroundColor: '#000', color: '#fff',paddingLeft: 20,fontWeight: 'bold'}}>Most Popular</Text>
+          <ShowsPopular></ShowsPopular>
+      </ScrollView>
+    </SafeAreaView>
     );
   }
 }
@@ -55,7 +50,7 @@ const styles = StyleSheet.create({
   headerStyle: {
     borderBottomWidth: 1,
     borderColor: 'lightgrey',
-    backgroundColor: '#fff'
+    backgroundColor: '#000'
   },
   labelStyle: {
     fontSize: 15,
@@ -69,7 +64,7 @@ const styles = StyleSheet.create({
   },
   underlineStyle: {
     height: 3.6,
-    backgroundColor: '#000',
+    backgroundColor: '#fff',
     width: 40
   }
 });

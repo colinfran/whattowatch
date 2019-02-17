@@ -3,25 +3,16 @@ import {
   View,
   Text,
   StyleSheet,
-
+  ScrollView,
+  SafeAreaView,
+  StatusBar
 }
 from 'react-native';
 import TopBarNav from 'top-bar-nav';
-import MoviesDay from '../components/MoviesDay';
-import MoviesWeek from '../components/MoviesWeek';
+import MoviesDay from '../components/Movies/MoviesDay';
+import MoviesWeek from '../components/Movies/MoviesWeek';
+import MoviesPopular from '../components/Movies/MoviesPopular';
 
-const ROUTES = {
-  MoviesDay,
-  MoviesWeek
-};
-
-const ROUTESTACK = [{
-  text: 'Today',
-  title: 'MoviesDay'
-}, {
-  text: 'This Week',
-  title: 'MoviesWeek'
-}];
 
 export default class MovieScreen extends React.Component {
   constructor(props) {
@@ -29,25 +20,30 @@ export default class MovieScreen extends React.Component {
     console.log("\n\n\n\n\n\n\n\n\n\n");
   }
 
+  static navigationOptions = {
+    header: null
+  };
+
   render() {
     return (
-      <View style={{
+      <SafeAreaView style={{
         flex: 1,
-        backgroundColor: 'lightgrey'
+        backgroundColor: 'black'
       }}>
-      <TopBarNav
-        routeStack={ROUTESTACK}
-        renderScene={(route, i) => { let Component = ROUTES[route.title]; return <Component index={i}/>;}}
-        headerStyle={[styles.headerStyle, {paddingTop: 15}]}
-        labelStyle={styles.labelStyle}
-        underlineStyle={styles.underlineStyle}
-        imageStyle={styles.imageStyle}
-        sidePadding={40}
-        initialIndex={0}
-        inactiveOpacity={1}
-        fadeLabels={true}
-      />
-    </View>
+      <StatusBar barStyle = "light-content"/>
+      <ScrollView style={{
+        flex: 1,
+        backgroundColor: 'black'
+      }}>
+      <Text style={{fontSize: 20, paddingTop: 5, backgroundColor: '#000', color: '#fff',paddingLeft: 20,fontWeight: 'bold'}}>Trending Today</Text>
+      <MoviesDay></MoviesDay>
+      <Text style={{fontSize: 20,paddingTop: 25, backgroundColor: '#000', color: '#fff', paddingLeft: 20,fontWeight: 'bold'}}>Trending This Week</Text>
+      <MoviesWeek></MoviesWeek>
+      <Text style={{fontSize: 20,paddingTop: 25, backgroundColor: '#000', color: '#fff', paddingLeft: 20,fontWeight: 'bold'}}>Most Popular </Text>
+      <MoviesPopular></MoviesPopular>
+
+    </ScrollView>
+    </SafeAreaView>
     );
   }
 }
@@ -70,7 +66,7 @@ const styles = StyleSheet.create({
   },
   underlineStyle: {
     height: 3.6,
-    backgroundColor: '#000',
+    backgroundColor: '#fff',
     width: 40
   }
 });
