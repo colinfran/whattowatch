@@ -3,4 +3,4 @@ A React Native app that displays the top movies and tv shows using the themovied
 
 WORK IN PROGRESS.
 
-![what to watch gif](/assets/whattowatch.gif?raw=true)
+![what to watch gif](/assets/images/whattowatch.gif?raw=true)
