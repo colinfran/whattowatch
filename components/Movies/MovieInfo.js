@@ -3,64 +3,92 @@ import {
   StyleSheet,
   Text,
   View,
-  Image
+  Image,
+  ActivityIndicator,
+  Linking,
+  PixelRatio,
+  Dimensions,
+  Platform,
+  WebView,
+  TouchableOpacity,
+  ScrollView
+
 }
 from 'react-native';
 
-var genres = {
-  28: "Action",
-  12: "Adventure",
-  16: "Animation",
-  35: "Comedy",
-  80: "Crime",
-  99: "Documentary",
-  18: "Drama",
-  10751: "Family",
-  14: "Fantasy",
-  36: "History",
-  27: "Horror",
-  10402: "Music",
-  9648: "Mystery",
-  10749: "Romance",
-  878: "Science Fiction",
-  10770: "TV Movie",
-  53: "Thriller",
-  10752: "War",
-  37: "Western"
-};
+import renderIf from 'render-if'
+import { Rating} from 'react-native-elements';
+import searchYoutube from 'youtube-api-v3-search';
+
+import YTSearch from 'youtube-api-search';
+import YouTube, { YouTubeStandaloneIOS, YouTubeStandaloneAndroid } from 'react-native-youtube';
+import Video from 'react-native-video'
+import { AntDesign } from '@expo/vector-icons';
+import { TabView, TabBar, SceneMap } from 'react-native-tab-view';
+
+
 
 export default class MovieInfo extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      data: this.props.data,
+      data_release_date: null,
+    };
     this.getGenres = this.getGenres.bind(this);
   }
 
+  componentDidMount(){
+    var myDate = this.state.data.release_date;
+    var chunks = myDate.split('-');
+    var formattedDate = chunks[1]+'/'+chunks[2]+'/'+chunks[0];
+    console.log(formattedDate);
+
+    const dateFormat = new Date(formattedDate);
+    console.log(dateFormat);
+
+    var strDate = dateFormat.toLocaleString("en", { month: "long"  }) + ' ' + dateFormat.toLocaleString("en", { day: "numeric" }) + ', ' + dateFormat.toLocaleString("en", { year: "numeric"});
+
+    this.setState({data_release_date: strDate});
+  }
+
   getGenres() {
-    var arr = this.props.data.genre_ids.slice(0);
+    var arr = this.state.data.genres.slice(0);
     var newArr = [];
-    while (arr.length !== 0) {
-      for (var g in genres) {
-        if (arr[0] == g) {
-          newArr.push(genres[g]);
-          arr.shift();
-        }
-      }
-      arr.shift();
+    for (var g in arr){
+      newArr.push(arr[g].name);
     }
     return (
-      <Text style={{fontSize: 14}}>Genres: {newArr.join(", ")}</Text>
+      <Text style={{fontSize: 12, color: 'white', paddingTop: 5}}>Genres: {newArr.join(", ")}</Text>
     );
   }
 
+
   render() {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.item}>{this.props.data.title}</Text>
-        <Text style={styles.item}>ID: {this.props.data.id}</Text>
-        {this.getGenres()}
-        <Text style={{fontSize: 12}}>Overview: {this.props.data.overview}</Text>
-        <Image source={{uri: 'https://image.tmdb.org/t/p/w500/'+ this.props.data.poster_path}} style={{width: 200, height: 300}} ></Image>
+    return(
+      <View style={[{flex: 1, paddingTop: 5 }]}>
+        <ScrollView style={{marginLeft:10, flex:1}}>
+          <View style={{flexDirection: 'row'}}>
+            <Rating
+              imageSize={12}
+              readonly
+              style={{alignItems: 'flex-start'}}
+              count={10}
+              startingValue={this.state.data.vote_average}
+              fractions={this.state.data.vote_average}
+              ratingCount={10}
+            />
+          <Text style={{fontSize: 10, color: 'white'}}>{"  ("}{this.state.data.vote_count}{")"}</Text>
+          </View>
+          <Text style={{fontSize: 12, color: 'white', paddingTop: 5}}>Popularity/Ranking: {this.state.data.popularity}</Text>
+          <Text style={{fontSize: 12, color: 'white', paddingTop: 5}}>Release Date: {this.state.data_release_date}</Text>
+          {this.getGenres()}
+          <View style={{flexDirection:'row', paddingTop: 5}}>
+            <Text style={{fontSize: 12, color: 'lightblue'}} onPress={() => Linking.openURL(this.state.data.homepage)}>{this.state.data.homepage}</Text>
+          </View>
+          <Text style={{fontSize: 10, color: 'white', paddingTop: 5}}>{this.state.data.overview}</Text>
+
+        </ScrollView>
       </View>
     );
   }
@@ -69,11 +97,14 @@ export default class MovieInfo extends React.Component {
 const styles = StyleSheet.create({
   container: {
     padding: 25,
-    marginBottom: 5,
     borderBottomWidth: 0.5,
     backgroundColor: 'white'
   },
   item: {
-    fontSize: 18,
-  }
+    fontSize: 16,
+    width: 300
+  },
+  scene: {
+    flex: 1,
+  },
 });

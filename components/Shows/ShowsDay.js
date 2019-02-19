@@ -1,48 +1,52 @@
-import React from 'react';
+import React from "react";
 import {
   StyleSheet,
   Text,
   View,
   FlatList,
   ActivityIndicator,
-  TouchableHighlight
+  Picker
 }
-from 'react-native';
+from "react-native";
 import Modal from "react-native-modal";
 
-import Show from './Show';
-import ShowInfo from './ShowInfo';
+import Show from "./Show";
+import ShowModal from "./ShowModal";
 
 export default class ShowsDay extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       isLoading: true,
-      tvData: null,
+      showData: null,
       modalVisible: false,
       modalData: null,
+      modalDataID: null,
+
     };
     this.updateDataForModal = this.updateDataForModal.bind(this);
   }
 
   componentDidMount() {
-    return fetch('https://api.themoviedb.org/3/trending/tv/day?api_key=dbcdb9d96b827ad1d9d7f6c5d9e2d636')
-      .then((response) => response.json())
-      .then((responseJson) => {
-        // console.log(responseJson.results);
+    return fetch("https://api.themoviedb.org/3/trending/tv/day?api_key=dbcdb9d96b827ad1d9d7f6c5d9e2d636")
+      .then(response => response.json())
+      .then(responseJson => {
+        console.log(responseJson.results[0]);
         this.setState({
-          isLoading: false,
-          tvData: responseJson.results
-        }, function() {});
+            isLoading: false,
+            showData: responseJson.results
+          },
+          function() {}
+        );
       })
-      .catch((error) => {
+      .catch(error => {
         console.error(error);
       });
   }
 
   updateDataForModal(arg) {
     this.setState({
-      modalData: arg,
+      modalDataID: arg,
       modalVisible: !this.state.modalVisible
     });
   }
@@ -50,29 +54,30 @@ export default class ShowsDay extends React.Component {
   render() {
     if (this.state.isLoading) {
       return (
-        <View style={{flex: 1, padding: 20}}>
-          <ActivityIndicator/>
+        <View style={{ flex: 1, padding: 20 }}>
+          <ActivityIndicator />
         </View>
-      )
+      );
     }
     else {
       return (
-        <View style={{backgroundColor:"#000", flex: 1}}>
+        <View style={{ backgroundColor: "#000", flex: 1, flexDirection: "column" }}>
           <FlatList
-             data={this.state.tvData}
-             horizontal={true}
-             showsHorizontalScrollIndicator={false}
-             keyExtractor={(item, index) => index.toString()}
-             renderItem={({item}) => <Show updateModalData={this.updateDataForModal} data={item}></Show>}
-             />
-           <Modal
-             isVisible={this.state.modalVisible}
-              onBackdropPress={() => this.setState({ modalVisible: !this.state.modalVisible })}
-              style={{ alignItems: "center" }}
-              hideModalContentWhileAnimating={true}
-             >
-             <ShowInfo data={this.state.modalData}></ShowInfo>
-           </Modal>
+            data={this.state.showData}
+            horizontal={true}
+            showsHorizontalScrollIndicator={false}
+            keyExtractor={(item, index) => index.toString()}
+            renderItem={({ item }) => (<Show updateModalData={this.updateDataForModal} data={item}/>)}
+          />
+          <Modal
+            isVisible={this.state.modalVisible}
+            style={{ alignItems: "center", }}
+            hideModalContentWhileAnimating={true}
+            onBackdropPress={() => this.setState({ modalVisible: !this.state.modalVisible })}
+
+          >
+            <ShowModal id={this.state.modalDataID} updateModalData={this.updateDataForModal}/>
+          </Modal>
         </View>
       );
     }

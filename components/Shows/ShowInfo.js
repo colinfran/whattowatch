@@ -3,60 +3,128 @@ import {
   StyleSheet,
   Text,
   View,
-  Image
+  Image,
+  ActivityIndicator,
+  Linking,
+  PixelRatio,
+  Dimensions,
+  Platform,
+  WebView,
+  TouchableOpacity,
+  ScrollView
+
 }
 from 'react-native';
 
-var genres = {
-  10759: "Action & Adventure",
-  16: "Animation",
-  35: "Comedy",
-  80: "Crime",
-  99: "Documentary",
-  18: "Drama",
-  10751: "Family",
-  10762: "Kids",
-  9648: "Mystery",
-  10763: "News",
-  10764: "Reality",
-  10765: "Sci-Fi & Fantasy",
-  10766: "Soap",
-  10767: "Talk",
-  10768: "War & Politics",
-  37: "Western"
-};
+import renderIf from 'render-if'
+import { Rating} from 'react-native-elements';
+import searchYoutube from 'youtube-api-v3-search';
+
+import YTSearch from 'youtube-api-search';
+import YouTube, { YouTubeStandaloneIOS, YouTubeStandaloneAndroid } from 'react-native-youtube';
+import Video from 'react-native-video'
+import { AntDesign } from '@expo/vector-icons';
+import { TabView, TabBar, SceneMap } from 'react-native-tab-view';
+
+
 
 export default class ShowInfo extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      data: this.props.data,
+      data_air_date: null,
+
+    };
     this.getGenres = this.getGenres.bind(this);
+    this.getCreator = this.getCreator.bind(this);
+    this.getNetworks = this.getNetworks.bind(this);
+
+  }
+
+  componentDidMount(){
+    var myDate = this.props.data.last_air_date;
+    var chunks = myDate.split('-');
+    var formattedDate = chunks[1]+'/'+chunks[2]+'/'+chunks[0];
+    console.log(formattedDate);
+
+    const dateFormat = new Date(formattedDate);
+    console.log(dateFormat);
+
+    var strDate = dateFormat.toLocaleString("en", { month: "long"  }) + ' ' + dateFormat.toLocaleString("en", { day: "numeric" }) + ', ' + dateFormat.toLocaleString("en", { year: "numeric"});
+
+    this.setState({data_air_date: strDate});
   }
 
   getGenres() {
-    var arr = this.props.data.genre_ids.slice(0);
+    var arr = this.state.data.genres.slice(0);
     var newArr = [];
-    while (arr.length !== 0) {
-      for (var g in genres) {
-        if (arr[0] == g) {
-          newArr.push(genres[g]);
-        }
-      }
-      arr.shift();
+    for (var g in arr){
+      newArr.push(arr[g].name);
     }
     return (
-      <Text style={{fontSize: 14}}>Genres: {newArr.join(", ")}</Text>
+      <Text style={{fontSize: 12, color: 'white', paddingTop: 5}}>Genres: {newArr.join(", ")}</Text>
     );
   }
 
+  getCreator() {
+    var arr = this.state.data.created_by.slice(0);
+    var newArr = [];
+    for (var g in arr){
+      newArr.push(arr[g].name);
+    }
+    if (newArr.length == 1){
+      return (
+        <Text style={{fontSize: 12, color: 'white', paddingTop: 5}}>Creator: {newArr[0]}</Text>
+      );
+    }
+    else{
+      <Text style={{fontSize: 12, color: 'white', paddingTop: 5}}>Creators: {newArr.join(", ")}</Text>
+    }
+  }
+
+  getNetworks() {
+    var arr = this.state.data.networks.slice(0);
+    var newArr = [];
+    for (var g in arr){
+      newArr.push(arr[g].name);
+    }
+    if (newArr.length == 1){
+      return (
+        <Text style={{fontSize: 12, color: 'white', paddingTop: 5}}>Watch on: {newArr[0]}</Text>
+      );
+    }
+    else{
+      <Text style={{fontSize: 12, color: 'white', paddingTop: 5}}>Watch on: {newArr.join(", ")}</Text>
+
+    }
+  }
+
+
   render() {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.item}>{this.props.data.name}</Text>
-        <Text style={styles.item}>ID: {this.props.data.id}</Text>
-        {this.getGenres()}
-        <Text style={{fontSize: 12}}>Overview: {this.props.data.overview}</Text>
-        <Image source={{uri: 'https://image.tmdb.org/t/p/w500/'+ this.props.data.poster_path}} style={{width: 200, height: 300}} ></Image>
+    return(
+      <View style={[{flex: 1, paddingTop: 5 }]}>
+        <ScrollView style={{marginLeft:10, flex:1}}>
+          <View style={{flexDirection: 'row'}}>
+            <Rating
+              imageSize={12}
+              readonly
+              style={{alignItems: 'flex-start'}}
+              count={10}
+              startingValue={this.state.data.vote_average}
+              fractions={this.state.data.vote_average}
+              ratingCount={10}
+            />
+          <Text style={{fontSize: 10, color: 'white'}}>{"  ("}{this.state.data.vote_count}{")"}</Text>
+          </View>
+          <Text style={{fontSize: 12, color: 'white', paddingTop: 5}}>Popularity/Ranking: {this.state.data.popularity}</Text>
+          {this.getCreator()}
+          <Text style={{fontSize: 12, color: 'white', paddingTop: 5}}>Last Air Date: {this.state.data_air_date}</Text>
+          {this.getGenres()}
+          <Text style={{fontSize: 12, color: 'white', paddingTop: 5}}>Number of Seasons: {this.state.data.number_of_seasons}</Text>
+          {this.getNetworks()}
+          <Text style={{fontSize: 12, color: 'white', paddingTop: 5}}>Overview: {this.state.data.overview}</Text>
+        </ScrollView>
       </View>
     );
   }
@@ -65,11 +133,15 @@ export default class ShowInfo extends React.Component {
 const styles = StyleSheet.create({
   container: {
     padding: 25,
-    marginBottom: 5,
     borderBottomWidth: 0.5,
     backgroundColor: 'white'
   },
   item: {
-    fontSize: 18,
-  }
+    fontSize: 12,
+    color: 'white',
+    paddingTop: 5
+  },
+  scene: {
+    flex: 1,
+  },
 });

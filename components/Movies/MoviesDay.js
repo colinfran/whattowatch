@@ -11,7 +11,7 @@ from "react-native";
 import Modal from "react-native-modal";
 
 import Movie from "./Movie";
-import MovieInfo from "./MovieInfo";
+import MovieModal from "./MovieModal";
 
 export default class MoviesDay extends React.Component {
   constructor(props) {
@@ -20,7 +20,9 @@ export default class MoviesDay extends React.Component {
       isLoading: true,
       movieData: null,
       modalVisible: false,
-      modalData: null
+      modalData: null,
+      modalDataID: null,
+
     };
     this.updateDataForModal = this.updateDataForModal.bind(this);
   }
@@ -44,7 +46,7 @@ export default class MoviesDay extends React.Component {
 
   updateDataForModal(arg) {
     this.setState({
-      modalData: arg,
+      modalDataID: arg,
       modalVisible: !this.state.modalVisible
     });
   }
@@ -69,11 +71,12 @@ export default class MoviesDay extends React.Component {
           />
           <Modal
             isVisible={this.state.modalVisible}
-            onBackdropPress={() => this.setState({ modalVisible: !this.state.modalVisible })}
-            style={{ alignItems: "center" }}
+            style={{ alignItems: "center", }}
             hideModalContentWhileAnimating={true}
+            onBackdropPress={() => this.setState({ modalVisible: !this.state.modalVisible })}
+
           >
-            <MovieInfo data={this.state.modalData} />
+            <MovieModal id={this.state.modalDataID} updateModalData={this.updateDataForModal}/>
           </Modal>
         </View>
       );

@@ -8,7 +8,7 @@ export default class TabBarIcon extends React.Component {
     return (
       <Icon.Entypo
         name={this.props.name}
-        size={26}
+        size={20}
         style={{ marginBottom: -3 }}
         color={this.props.focused ? Colors.tabIconSelected : Colors.tabIconDefault}
       />
