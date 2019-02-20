@@ -25,9 +25,16 @@ export default class MoviesPopular extends React.Component {
 
     };
     this.updateDataForModal = this.updateDataForModal.bind(this);
+    this.getMovieData = this.getMovieData.bind(this);
+
   }
 
   componentDidMount() {
+    this.getMovieData();
+  }
+
+  // API Call to get movie popular data
+  getMovieData(){
     return fetch("https://api.themoviedb.org/3/discover/movie?api_key=dbcdb9d96b827ad1d9d7f6c5d9e2d636&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1")
       .then(response => response.json())
       .then(responseJson => {
@@ -44,6 +51,7 @@ export default class MoviesPopular extends React.Component {
       });
   }
 
+  // function to allow for children comonents to updateData in modal
   updateDataForModal(arg) {
     this.setState({
       modalDataID: arg,

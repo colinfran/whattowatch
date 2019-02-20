@@ -25,9 +25,15 @@ export default class MoviesWeek extends React.Component {
 
     };
     this.updateDataForModal = this.updateDataForModal.bind(this);
+    this.getMovieData = this.getMovieData.bind(this);
   }
 
   componentDidMount() {
+    this.getMovieData();
+  }
+
+  // API Call to get movie week data
+  getMovieData(){
     return fetch("https://api.themoviedb.org/3/trending/movie/week?api_key=dbcdb9d96b827ad1d9d7f6c5d9e2d636")
       .then(response => response.json())
       .then(responseJson => {
@@ -44,6 +50,7 @@ export default class MoviesWeek extends React.Component {
       });
   }
 
+  // function to allow for children comonents to updateData in modal
   updateDataForModal(arg) {
     this.setState({
       modalDataID: arg,

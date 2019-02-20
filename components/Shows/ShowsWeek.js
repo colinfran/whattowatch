@@ -25,13 +25,18 @@ export default class ShowsWeek extends React.Component {
 
     };
     this.updateDataForModal = this.updateDataForModal.bind(this);
+    this.getData = this.getData.bind(this);
   }
 
   componentDidMount() {
+    this.getData();
+  }
+
+  // API Call to get TV week data
+  getData(){
     return fetch("https://api.themoviedb.org/3/trending/tv/week?api_key=dbcdb9d96b827ad1d9d7f6c5d9e2d636")
       .then(response => response.json())
       .then(responseJson => {
-        // console.log(responseJson.results);
         this.setState({
             isLoading: false,
             showData: responseJson.results
@@ -44,6 +49,7 @@ export default class ShowsWeek extends React.Component {
       });
   }
 
+  // function to allow for children comonents to updateData in modal
   updateDataForModal(arg) {
     this.setState({
       modalDataID: arg,

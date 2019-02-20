@@ -12,6 +12,7 @@ import TopBarNav from 'top-bar-nav';
 import ShowsDay from '../components/Shows/ShowsDay';
 import ShowsWeek from '../components/Shows/ShowsWeek';
 import ShowsPopular from '../components/Shows/ShowsPopular';
+import ShowsTopRated from '../components/Shows/ShowsTopRated';
 
 export default class ShowScreen extends React.Component {
   constructor(props) {
@@ -40,6 +41,8 @@ export default class ShowScreen extends React.Component {
           <ShowsWeek></ShowsWeek>
           <Text style={{fontSize: 20,paddingTop: 25, backgroundColor: '#000', color: '#fff',paddingLeft: 20,fontWeight: 'bold'}}>Most Popular</Text>
           <ShowsPopular></ShowsPopular>
+          <Text style={{fontSize: 20,paddingTop: 25, backgroundColor: '#000', color: '#fff',paddingLeft: 20,fontWeight: 'bold'}}>Top Rated</Text>
+          <ShowsTopRated></ShowsTopRated>
       </ScrollView>
     </SafeAreaView>
     );

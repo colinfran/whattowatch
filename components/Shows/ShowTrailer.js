@@ -24,38 +24,39 @@ export default class ShowTrailer extends React.Component {
     this.state = {
       title: this.props.title,
       videoLoading: this.props.videoLoading,
-      videoId: null,
+      videoData: this.props.videoData,
     };
   }
 
   componentDidMount(){
-    this.setState({videoId: "8bYBOVWLNIs", videoLoading: false});
-    // var query = this.state.title + " trailer";
-    // YTSearch( {key: APIKEY, term: query}, videos => {
-    //   console.log(videos);
-    //     this.setState({videoId: videos[0].id.videoId, videoLoading: false});
-    //   }
-    // );
+    this.setState({videoLoading: false});
   }
 
+  renderVideos() {
+    return this.state.videoData.map((item, index) =>
+      <View style={{flex: 1, marginBottom: 30}} key={index}>
+        <WebView
+          style={{flex:1, backgroundColor: '#232b2b', height: 200, }}
+          javaScriptEnabled={true}
+          scrollEnabled={false}
+          source={{uri: 'https://www.youtube.com/embed/' + item.key + '?rel=0&autoplay=0&showinfo=0&controls=0'}}
+        />
+      </View>
+    );
+  }
 
   render() {
     return(
-      <View style={{flex:1}}>
+      <ScrollView style={{flex:1, backgroundColor: '#121D1D'}}>
         {renderIf(!this.state.videoLoading)(() => (
-          <WebView
-              style={{flex:1, marginTop: 10, backgroundColor: '#232b2b'}}
-              javaScriptEnabled={true}
-              scrollEnabled={false}
-              source={{uri: 'https://www.youtube.com/embed/' + this.state.videoId + '?rel=0&autoplay=0&showinfo=0&controls=0'}}
-          />
+          this.renderVideos()
         ))}
         {renderIf(this.state.videoLoading)(() => (
           <View style={{ flex: 1, padding: 20 }}>
             <ActivityIndicator />
           </View>
         ))}
-      </View>
+      </ScrollView>
     );
   }
 }

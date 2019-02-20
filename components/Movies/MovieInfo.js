@@ -36,37 +36,37 @@ export default class MovieInfo extends React.Component {
       data_release_date: null,
     };
     this.getGenres = this.getGenres.bind(this);
+    this.getDate = this.getDate.bind(this);
   }
 
   componentDidMount(){
-    var myDate = this.state.data.release_date;
-    var chunks = myDate.split('-');
-    var formattedDate = chunks[1]+'/'+chunks[2]+'/'+chunks[0];
-    console.log(formattedDate);
-
-    const dateFormat = new Date(formattedDate);
-    console.log(dateFormat);
-
-    var strDate = dateFormat.toLocaleString("en", { month: "long"  }) + ' ' + dateFormat.toLocaleString("en", { day: "numeric" }) + ', ' + dateFormat.toLocaleString("en", { year: "numeric"});
-
-    this.setState({data_release_date: strDate});
+    this.getDate();
   }
 
+  // This function returns a string containing each genre in genre array
   getGenres() {
     var arr = this.state.data.genres.slice(0);
     var newArr = [];
-    for (var g in arr){
+    for (var g in arr)
       newArr.push(arr[g].name);
-    }
-    return (
-      <Text style={{fontSize: 12, color: 'white', paddingTop: 5}}>Genres: {newArr.join(", ")}</Text>
-    );
+    return <Text style={{fontSize: 12, color: 'white', paddingTop: 5}}>Genres: {newArr.join(", ")}</Text>
+  }
+
+
+  // This function converts a date string into the wanted format   
+  getDate(){
+    var myDate = this.state.data.release_date;
+    var chunks = myDate.split('-');
+    var formattedDate = chunks[1]+'/'+chunks[2]+'/'+chunks[0];
+    const dateFormat = new Date(formattedDate);
+    var strDate = dateFormat.toLocaleString("en", { month: "long"  }) + ' ' + dateFormat.toLocaleString("en", { day: "numeric" }) + ', ' + dateFormat.toLocaleString("en", { year: "numeric"});
+    this.setState({data_release_date: strDate});
   }
 
 
   render() {
     return(
-      <View style={[{flex: 1, paddingTop: 5 }]}>
+      <View style={[{flex: 1, paddingTop: 5, backgroundColor: '#121D1D' }]}>
         <ScrollView style={{marginLeft:10, flex:1}}>
           <View style={{flexDirection: 'row'}}>
             <Rating

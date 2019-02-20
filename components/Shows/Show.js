@@ -14,10 +14,13 @@ export default class Show extends React.Component {
   render() {
     return (
       <TouchableOpacity style={styles.container} onPress={() => this.props.updateModalData(this.props.data.id)}>
-        <View style={{backgroundColor: '#fff',   justifyContent: 'center', alignItems: 'center',  height: 30,width: 200,}}>
+        <View style={{backgroundColor: '#fff',   justifyContent: 'center', alignItems: 'center',  height: 30,width: 200, borderTopLeftRadius: 10,
+        borderTopRightRadius: 10}}>
           <Text style={styles.item}>{this.props.data.name}</Text>
         </View>
-        <AsyncImage source={{uri: 'https://image.tmdb.org/t/p/w500/'+ this.props.data.poster_path}} style={{width: 200, height: 300}} />
+        <View style={{borderBottomLeftRadius: 10,borderBottomRightRadius: 10, overflow: "hidden"}}>
+          <AsyncImage source={{uri: 'https://image.tmdb.org/t/p/w500/'+ this.props.data.poster_path}} style={{width: 200, height: 300}} />
+        </View>
       </TouchableOpacity>
     );
   }
@@ -36,7 +39,6 @@ const styles = StyleSheet.create({
   item: {
     fontSize: 12,
     textAlign:'center',
-    backgroundColor: '#fff',
     color: '#000',
   }
 });

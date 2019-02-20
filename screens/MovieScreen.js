@@ -12,6 +12,7 @@ import TopBarNav from 'top-bar-nav';
 import MoviesDay from '../components/Movies/MoviesDay';
 import MoviesWeek from '../components/Movies/MoviesWeek';
 import MoviesPopular from '../components/Movies/MoviesPopular';
+import MoviesTopRated from '../components/Movies/MoviesTopRated';
 
 
 export default class MovieScreen extends React.Component {
@@ -41,6 +42,8 @@ export default class MovieScreen extends React.Component {
       <MoviesWeek></MoviesWeek>
       <Text style={{fontSize: 20,paddingTop: 25, backgroundColor: '#000', color: '#fff', paddingLeft: 20,fontWeight: 'bold'}}>Most Popular </Text>
       <MoviesPopular></MoviesPopular>
+      <Text style={{fontSize: 20,paddingTop: 25, backgroundColor: '#000', color: '#fff', paddingLeft: 20,fontWeight: 'bold'}}>Top Rated</Text>
+      <MoviesTopRated></MoviesTopRated>
 
     </ScrollView>
     </SafeAreaView>

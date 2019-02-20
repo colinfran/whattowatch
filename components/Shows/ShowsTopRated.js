@@ -10,33 +10,40 @@ import {
 from "react-native";
 import Modal from "react-native-modal";
 
-import Movie from "./Movie";
-import MovieModal from "./MovieModal";
+import Show from "./Show";
+import ShowModal from "./ShowModal";
 
-export default class MoviesNew extends React.Component {
+export default class ShowsTopRated extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       isLoading: true,
-      movieData: null,
+      showData: null,
       modalVisible: false,
       modalData: null,
       modalDataID: null,
 
     };
     this.updateDataForModal = this.updateDataForModal.bind(this);
+    this.getTopRated = this.getTopRated.bind(this);
+
   }
 
   componentDidMount() {
-    return fetch("https://api.themoviedb.org/3/discover/movie?api_key=dbcdb9d96b827ad1d9d7f6c5d9e2d636&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1")
+    this.getTopRated();
+  }
+
+  // API Call to get TV top rated data
+  getTopRated(){
+    return fetch("https://api.themoviedb.org/3/tv/top_rated?api_key=dbcdb9d96b827ad1d9d7f6c5d9e2d636&language=en-US&page=1")
       .then(response => response.json())
       .then(responseJson => {
-        // console.log(responseJson.results);
         this.setState({
             isLoading: false,
-            movieData: responseJson.results
+            showData: responseJson.results
           },
-          function() {}
+          function() {
+          }
         );
       })
       .catch(error => {
@@ -44,6 +51,7 @@ export default class MoviesNew extends React.Component {
       });
   }
 
+  // function to allow for children comonents to updateData in modal
   updateDataForModal(arg) {
     this.setState({
       modalDataID: arg,
@@ -63,19 +71,20 @@ export default class MoviesNew extends React.Component {
       return (
         <View style={{ backgroundColor: "#000", flex: 1, flexDirection: "column" }}>
           <FlatList
-            data={this.state.movieData}
+            data={this.state.showData}
             horizontal={true}
             showsHorizontalScrollIndicator={false}
             keyExtractor={(item, index) => index.toString()}
-            renderItem={({ item }) => (<Movie updateModalData={this.updateDataForModal} data={item}/>)}
+            renderItem={({ item }) => (<Show updateModalData={this.updateDataForModal} data={item}/>)}
           />
           <Modal
             isVisible={this.state.modalVisible}
-            onBackdropPress={() => this.setState({ modalVisible: !this.state.modalVisible })}
-            style={{ alignItems: "center" }}
+            style={{ alignItems: "center", }}
             hideModalContentWhileAnimating={true}
+            onBackdropPress={() => this.setState({ modalVisible: !this.state.modalVisible })}
+
           >
-            <MovieModal  id={this.state.modalDataID} />
+            <ShowModal id={this.state.modalDataID} updateModalData={this.updateDataForModal}/>
           </Modal>
         </View>
       );
