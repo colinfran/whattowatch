@@ -7,13 +7,16 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "eject": "expo eject",
-    "test": "node ./node_modules/jest/bin/jest.js --watchAll"
+    "test": "jest"
   },
   "jest": {
-    "preset": "jest-expo"
+    "preset": "jest-expo",
+    "transformIgnorePatterns": ["node_modules/(?!top-bar-nav)/"]
+
   },
   "dependencies": {
     "@expo/samples": "2.1.1",
+    "babel": "^6.23.0",
     "class-autobind": "^0.1.4",
     "expo": "^31.0.2",
     "querystring": "^0.2.0",
