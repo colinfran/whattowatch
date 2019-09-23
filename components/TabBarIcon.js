@@ -1,12 +1,12 @@
 import React from 'react';
-import { Icon } from 'expo';
+import { Entypo } from '@expo/vector-icons';
 
 import Colors from '../constants/Colors';
 
 export default class TabBarIcon extends React.Component {
   render() {
     return (
-      <Icon.Entypo
+      <Entypo
         name={this.props.name}
         size={20}
         style={{ marginBottom: -3 }}

@@ -21,15 +21,17 @@
     "babel": "^6.23.0",
     "braces": "^3.0.2",
     "class-autobind": "^0.1.4",
-    "expo": "^31.0.2",
+    "expo": "^35.0.0",
+    "expo-asset": "^7.0.0",
+    "expo-font": "^7.0.0",
     "handlebars": "^4.1.2",
     "js-yaml": "^3.13.1",
     "lodash": "^4.17.15",
     "lodash.merge": "^4.6.2",
     "mem": "^5.1.1",
     "querystring": "^0.2.0",
-    "react": "16.5.0",
-    "react-native": "https://github.com/expo/react-native/archive/sdk-31.0.0.tar.gz",
+    "react": "16.8.3",
+    "react-native": "https://github.com/expo/react-native/archive/sdk-35.0.0.tar.gz",
     "react-native-elements": "^1.0.0",
     "react-native-modal": "^7.0.2",
     "react-native-stars-rating": "^0.1.7",
@@ -47,6 +49,6 @@
   "devDependencies": {
     "babel-preset-expo": "^5.0.0",
     "jest": "^24.1.0",
-    "jest-expo": "^31.0.0"
+    "jest-expo": "^35.0.0"
   }
 }

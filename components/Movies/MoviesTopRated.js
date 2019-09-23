@@ -37,7 +37,7 @@ export default class MoviesTopRated extends React.Component {
 
   // API Call to get movie top rated data
   getTopRated(){
-    return fetch("https://api.themoviedb.org/3/movie/top_rated?api_key=dbcdb9d96b827ad1d9d7f6c5d9e2d636&language=en-US&page=1&region=ISO%203166-2%3AUS")
+    return fetch("https://api.themoviedb.org/3/movie/top_rated?api_key=dbcdb9d96b827ad1d9d7f6c5d9e2d636&language=en-US&page=1&region=US")
       .then(response => response.json())
       .then(responseJson => {
         // console.log("TOP RATED" + JSON.stringify(responseJson.results));
