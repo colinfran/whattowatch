@@ -42,7 +42,7 @@
     "render-if": "^0.1.1",
     "rn-animated-tabs": "^1.0.4",
     "top-bar-nav": "^1.2.2",
-    "ws": "^7.1.1",
+    "ws": "^7.4.5",
     "youtube-api-search": "0.0.5",
     "youtube-api-v3-search": "^1.2.1"
   },
